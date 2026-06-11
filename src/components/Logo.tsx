@@ -16,7 +16,7 @@ export const Logo: React.FC<LogoProps> = ({
   const sloganColor = variant === 'light' ? 'text-neuro-textSecondary' : 'text-neuro-textMuted';
 
   return (
-    <div className={`flex items-center gap-3 select-none ${className}`}>
+    <div className={`flex items-center gap-3 select-none logo-container ${className}`}>
       {/* Ícone Vetorial SVG do Instituto NeuroPsi (Representação fiel do Logo) */}
       <svg
         className="h-10 w-10 flex-shrink-0"
@@ -36,6 +36,7 @@ export const Logo: React.FC<LogoProps> = ({
         
         {/* Hemisfério Esquerdo do Cérebro (Verde/Esmeralda) */}
         <path
+          className="logo-brain-left"
           d="M 100,45 
              C 85,45 70,50 65,65 
              C 60,75 68,85 62,95 
@@ -49,6 +50,7 @@ export const Logo: React.FC<LogoProps> = ({
         
         {/* Hemisfério Direito do Cérebro (Magenta/Roxo) */}
         <path
+          className="logo-brain-right"
           d="M 100,45 
              C 115,45 130,50 135,65 
              C 140,75 132,85 138,95 

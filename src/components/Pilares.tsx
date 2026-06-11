@@ -76,7 +76,7 @@ export const Pilares: React.FC = () => {
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
               whileHover={{ y: -6 }}
-              className={`relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br border border-neuro-border backdrop-blur-glass flex flex-col justify-between transition-all duration-300 ${pilar.colorClass} ${pilar.shadowColor} group`}
+              className={`relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br border-glow-premium backdrop-blur-glass flex flex-col justify-between transition-all duration-300 ${pilar.colorClass} ${pilar.shadowColor} group`}
             >
               {/* Círculo decorativo de fundo */}
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-500" />

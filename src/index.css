@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   html {
@@ -11,6 +11,7 @@
     background-color: #03071E;
     color: #F8FAFC;
     font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -20,19 +21,32 @@
 }
 
 @layer utilities {
-  /* Efeito de Glassmorphism Premium */
+  /* Efeito de Glassmorphism Premium com Blur Otimizado para Mobile */
   .bg-glass {
     background: rgba(10, 15, 40, 0.45);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(99, 102, 241, 0.1);
+    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
   }
   
   .bg-glass-card {
     background: linear-gradient(135deg, rgba(10, 20, 60, 0.4) 0%, rgba(5, 10, 30, 0.6) 100%);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(99, 102, 241, 0.08);
+    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .bg-glass {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+    .bg-glass-card {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
   }
   
   .bg-glass-card:hover {
@@ -40,28 +54,72 @@
     box-shadow: 0 8px 32px 0 rgba(63, 55, 201, 0.15);
   }
 
+  /* Borda com Iluminação Gradiente Premium (Glassmorphism de Última Geração) */
+  .border-glow-premium {
+    position: relative;
+    border: 1px solid transparent;
+  }
+  
+  .border-glow-premium::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(16, 185, 129, 0.05) 50%, rgba(217, 4, 41, 0.2) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Efeito de Alto Contraste para Acessibilidade */
+  .high-contrast-mode {
+    color: #FFFFFF !important;
+  }
+  
+  .high-contrast-mode .text-neuro-textSecondary {
+    color: #F1F5F9 !important;
+  }
+  
+  .high-contrast-mode .text-neuro-textMuted {
+    color: #E2E8F0 !important;
+  }
+
+  .high-contrast-mode .bg-glass,
+  .high-contrast-mode .bg-glass-card {
+    background: rgba(3, 7, 30, 0.9) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  }
+
   /* Gradiente do texto de títulos */
   .text-gradient {
     background: linear-gradient(135deg, #F8FAFC 30%, #94A3B8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-primary {
     background: linear-gradient(135deg, #4895EF 0%, #3F37C9 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   
   .text-gradient-accent {
     background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-highlight {
     background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
@@ -71,6 +129,35 @@
       radial-gradient(circle at 10% 20%, rgba(63, 55, 201, 0.15) 0%, transparent 40%),
       radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
       radial-gradient(circle at 50% 50%, rgba(217, 4, 41, 0.05) 0%, transparent 50%);
+  }
+
+  /* Micro-animações para o Logotipo SVG */
+  @keyframes pulseLeft {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    50% { transform: scale(1.05) translate(-1px, -0.5px); }
+  }
+  
+  @keyframes pulseRight {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    50% { transform: scale(1.05) translate(1px, -0.5px); }
+  }
+  
+  .logo-brain-left {
+    transform-origin: 100px 100px;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .logo-brain-right {
+    transform-origin: 100px 100px;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .logo-container:hover .logo-brain-left {
+    animation: pulseLeft 1.8s ease-in-out infinite;
+  }
+  
+  .logo-container:hover .logo-brain-right {
+    animation: pulseRight 1.8s ease-in-out infinite;
   }
 
   /* Scrollbar Customizada */

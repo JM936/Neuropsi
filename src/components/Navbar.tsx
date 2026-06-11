@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Contrast } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from './UI/Button';
 import { useScrollAnchor } from '../hooks/useScrollAnchor';
@@ -37,6 +37,17 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const [highContrast, setHighContrast] = useState(false);
+
+  const toggleHighContrast = () => {
+    setHighContrast(!highContrast);
+    if (!highContrast) {
+      document.body.classList.add('high-contrast-mode');
+    } else {
+      document.body.classList.remove('high-contrast-mode');
+    }
+  };
 
   const handleNavClick = (id: string) => {
     setIsOpen(false);
@@ -100,6 +111,15 @@ export const Navbar: React.FC = () => {
                   )}
                 </a>
               ))}
+              
+              <button
+                onClick={toggleHighContrast}
+                className="p-2 rounded-lg text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/40 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
+                aria-label="Alternar modo de alto contraste"
+                title="Alternar Alto Contraste"
+              >
+                <Contrast size={20} className={highContrast ? 'text-neuro-accent' : ''} />
+              </button>
               
               <Button 
                 variant="primary" 
@@ -187,7 +207,21 @@ export const Navbar: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-6 border-t border-neuro-border mt-auto">
+              <div className="pt-6 border-t border-neuro-border mt-auto flex flex-col gap-4">
+                <button
+                  onClick={toggleHighContrast}
+                  className="w-full py-3 px-4 rounded-lg bg-neuro-cardBg/60 border border-neuro-border text-neuro-textPrimary flex items-center justify-between text-sm font-semibold hover:bg-neuro-cardBg/90 transition-colors min-h-[44px]"
+                  aria-label="Alternar modo de alto contraste"
+                >
+                  <span className="flex items-center gap-2">
+                    <Contrast size={18} />
+                    Alto Contraste
+                  </span>
+                  <span className="text-xs text-neuro-accent uppercase tracking-wider font-bold">
+                    {highContrast ? 'Ativo' : 'Desativado'}
+                  </span>
+                </button>
+
                 <Button 
                   variant="primary" 
                   fullWidth 

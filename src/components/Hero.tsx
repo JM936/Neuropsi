@@ -76,7 +76,7 @@ export const Hero: React.FC = () => {
           {/* Título Principal */}
           <motion.h1 
             variants={itemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 text-gradient font-title max-w-4xl"
+            className="text-[clamp(1.8rem,5vw,3.75rem)] font-extrabold tracking-tight leading-[1.15] mb-4 text-gradient font-title max-w-4xl"
           >
             Instituto de Neuropsicopedagogia Aplicada e Educação Inclusiva
           </motion.h1>

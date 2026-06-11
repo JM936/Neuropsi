@@ -188,7 +188,7 @@ export const Formations: React.FC = () => {
           <>
             {/* Backdrop do Modal */}
             <motion.div
-              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto will-change-[opacity]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -196,7 +196,7 @@ export const Formations: React.FC = () => {
             >
               {/* Corpo do Modal */}
               <motion.div
-                className="w-full max-w-2xl bg-neuro-darkBgLight border border-neuro-border rounded-2xl p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto"
+                className="w-full max-w-2xl bg-neuro-darkBgLight border border-neuro-border rounded-2xl p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto will-change-[transform,opacity]"
                 initial={{ scale: 0.9, y: 20, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}

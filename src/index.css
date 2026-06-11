@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: #03071E;
+    color: #F8FAFC;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  /* Efeito de Glassmorphism Premium */
+  .bg-glass {
+    background: rgba(10, 15, 40, 0.45);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+  }
+  
+  .bg-glass-card {
+    background: linear-gradient(135deg, rgba(10, 20, 60, 0.4) 0%, rgba(5, 10, 30, 0.6) 100%);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(99, 102, 241, 0.08);
+  }
+  
+  .bg-glass-card:hover {
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(63, 55, 201, 0.15);
+  }
+
+  /* Gradiente do texto de títulos */
+  .text-gradient {
+    background: linear-gradient(135deg, #F8FAFC 30%, #94A3B8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #4895EF 0%, #3F37C9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-highlight {
+    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Gradiente animado sutil para background */
+  .bg-animated-radial {
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(63, 55, 201, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(217, 4, 41, 0.05) 0%, transparent 50%);
+  }
+
+  /* Scrollbar Customizada */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #03071E;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.5);
+  }
+}

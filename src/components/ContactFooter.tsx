@@ -351,9 +351,12 @@ export const ContactFooter: React.FC = () => {
             <Logo showText={true} className="h-10" />
           </Link>
           
-          <p className="text-xs text-neuro-textMuted text-center md:text-right">
+          <p className="text-xs text-neuro-textMuted text-center md:text-right leading-relaxed">
             &copy; {new Date().getFullYear()} Instituto de Neuropsicopedagogia. Todos os direitos reservados.<br />
-            Desenvolvido sob rígidos critérios científicos de acessibilidade e ergonomia mental.
+            Desenvolvido sob rígidos critérios científicos de acessibilidade e ergonomia mental.<br />
+            <Link to="/privacidade" className="text-neuro-accent hover:underline font-semibold mt-1 inline-block">
+              Política de Privacidade (LGPD)
+            </Link>
           </p>
         </div>
 

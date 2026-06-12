@@ -14,6 +14,7 @@ import { DiferenciaisPage } from './pages/DiferenciaisPage';
 import { PresidentPage } from './pages/PresidentPage';
 import { SocialImpactPage } from './pages/SocialImpactPage';
 import { ContactPage } from './pages/ContactPage';
+import { PrivacyPage } from './pages/PrivacyPage';
 
 const App: React.FC = () => {
   return (
@@ -37,6 +38,7 @@ const App: React.FC = () => {
             <Route path="/presidente" element={<PresidentPage />} />
             <Route path="/impacto" element={<SocialImpactPage />} />
             <Route path="/contato" element={<ContactPage />} />
+            <Route path="/privacidade" element={<PrivacyPage />} />
             
             {/* Redirecionamento de rotas inexistentes para a Home */}
             <Route path="*" element={<Home />} />

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '../components/UI/Button';
@@ -13,6 +14,8 @@ export const ContactPage: React.FC = () => {
     message: ''
   });
 
+  const [honeypot, setHoneypot] = useState('');
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -26,6 +29,7 @@ export const ContactPage: React.FC = () => {
     }
     if (!formData.phone.trim()) tempErrors.phone = 'O telefone/WhatsApp é obrigatório';
     if (!formData.message.trim()) tempErrors.message = 'Escreva sua mensagem ou dúvida';
+    if (!acceptedPrivacy) tempErrors.privacy = 'Você deve aceitar a Política de Privacidade para enviar';
     
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -47,6 +51,22 @@ export const ContactPage: React.FC = () => {
     
     setTimeout(() => {
       try {
+        // Se o honeypot estiver preenchido, simulamos sucesso silenciosamente contra bots
+        if (honeypot.trim()) {
+          setStatus('success');
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            institution: '',
+            role: '',
+            message: ''
+          });
+          setHoneypot('');
+          setAcceptedPrivacy(false);
+          return;
+        }
+
         setStatus('success');
         setFormData({
           name: '',
@@ -56,6 +76,8 @@ export const ContactPage: React.FC = () => {
           role: '',
           message: ''
         });
+        setHoneypot('');
+        setAcceptedPrivacy(false);
       } catch {
         setStatus('error');
       }
@@ -210,6 +232,48 @@ export const ContactPage: React.FC = () => {
                   placeholder="Descreva a demanda..."
                 />
                 {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
+              </div>
+
+              {/* Campo Honeypot para proteção contra bots (invisível para humanos) */}
+              <div className="hidden" aria-hidden="true">
+                <label htmlFor="website_url">Website URL</label>
+                <input
+                  type="text"
+                  id="website_url"
+                  name="website_url"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
+              {/* Checkbox de Consentimento LGPD */}
+              <div className="space-y-2">
+                <div className="flex items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    id="acceptedPrivacy"
+                    checked={acceptedPrivacy}
+                    onChange={(e) => {
+                      setAcceptedPrivacy(e.target.checked);
+                      if (errors.privacy) {
+                        setErrors(prev => ({ ...prev, privacy: '' }));
+                      }
+                    }}
+                    className={`mt-1 h-4 w-4 rounded border bg-neuro-darkBg/80 text-neuro-primary focus:ring-neuro-primary transition-colors cursor-pointer ${
+                      errors.privacy ? 'border-red-500' : 'border-neuro-border'
+                    }`}
+                  />
+                  <label htmlFor="acceptedPrivacy" className="text-xs text-neuro-textSecondary leading-normal cursor-pointer select-none">
+                    Declaro que li e concordo com a{' '}
+                    <Link to="/privacidade" className="text-neuro-accent hover:underline font-semibold">
+                      Política de Privacidade
+                    </Link>{' '}
+                    para o tratamento dos meus dados de contato institucional. *
+                  </label>
+                </div>
+                {errors.privacy && <p className="text-red-500 text-xs font-medium">{errors.privacy}</p>}
               </div>
 
               {/* Botão de Envio */}

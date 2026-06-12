@@ -131,33 +131,18 @@
       radial-gradient(circle at 50% 50%, rgba(217, 4, 41, 0.05) 0%, transparent 50%);
   }
 
-  /* Micro-animações para o Logotipo SVG */
-  @keyframes pulseLeft {
-    0%, 100% { transform: scale(1) translate(0, 0); }
-    50% { transform: scale(1.05) translate(-1px, -0.5px); }
+  /* Micro-animações para a Imagem do Logotipo */
+  @keyframes logoPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.06) rotate(1.5deg); }
   }
   
-  @keyframes pulseRight {
-    0%, 100% { transform: scale(1) translate(0, 0); }
-    50% { transform: scale(1.05) translate(1px, -0.5px); }
-  }
-  
-  .logo-brain-left {
-    transform-origin: 100px 100px;
+  .logo-image-animate {
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
-  .logo-brain-right {
-    transform-origin: 100px 100px;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  
-  .logo-container:hover .logo-brain-left {
-    animation: pulseLeft 1.8s ease-in-out infinite;
-  }
-  
-  .logo-container:hover .logo-brain-right {
-    animation: pulseRight 1.8s ease-in-out infinite;
+  .logo-container:hover .logo-image-animate {
+    animation: logoPulse 2s ease-in-out infinite;
   }
 
   /* Scrollbar Customizada */

@@ -40,7 +40,10 @@ export const Solutions: React.FC = () => {
         'Adaptação Curricular e de Materiais Didáticos'
       ],
       ctaText: 'Falar com Consultor de Educação',
-      bgGlow: 'bg-teal-500/5'
+      bgGlow: 'bg-teal-500/5',
+      image: '/images/solutions_education.png',
+      icon: <GraduationCap size={24} className="text-teal-400" />,
+      colorClass: 'text-teal-400 border-teal-500/20 bg-teal-950/40'
     },
     saude: {
       title: 'Excelência Clínica e Intervenção Acolhedora',
@@ -54,7 +57,10 @@ export const Solutions: React.FC = () => {
         'Gestão de unidades de reabilitação e acolhimento'
       ],
       ctaText: 'Falar com Consultor de Saúde',
-      bgGlow: 'bg-rose-500/5'
+      bgGlow: 'bg-rose-500/5',
+      image: '/images/solutions_health.png',
+      icon: <HeartPulse size={24} className="text-rose-400" />,
+      colorClass: 'text-rose-400 border-rose-500/20 bg-rose-950/40'
     },
     seguranca: {
       title: 'Treinamento Tático e Atendimento Humanizado',
@@ -68,7 +74,10 @@ export const Solutions: React.FC = () => {
         'Legislação e direitos da pessoa neurodivergente'
       ],
       ctaText: 'Falar com Consultor de Segurança',
-      bgGlow: 'bg-amber-500/5'
+      bgGlow: 'bg-amber-500/5',
+      image: '/images/solutions_security.png',
+      icon: <ShieldAlert size={24} className="text-amber-400" />,
+      colorClass: 'text-amber-400 border-amber-500/20 bg-amber-950/40'
     }
   };
 
@@ -145,16 +154,34 @@ export const Solutions: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 
                 {/* Lado Esquerdo: Descrição e CTA */}
-                <div className="lg:col-span-7 flex flex-col justify-between">
+                <div className="lg:col-span-7 flex flex-col justify-between relative">
                   <div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold font-title text-neuro-textPrimary mb-4">
                       {currentContent.title}
                     </h3>
-                    <p className="text-neuro-textSecondary text-base leading-relaxed mb-8">
+                    <p className="text-neuro-textSecondary text-base leading-relaxed mb-4">
                       {currentContent.description}
                     </p>
                   </div>
                   
+                  {/* Ilustração Temática Decorativa */}
+                  <div className="my-6 relative rounded-xl overflow-hidden h-36 sm:h-44 border border-neuro-border/20 bg-neuro-darkBg/30 flex items-center justify-center pointer-events-none group">
+                    <img 
+                      src={currentContent.image} 
+                      alt={currentContent.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-neuro-darkBgLight/80 via-transparent to-neuro-darkBgLight/45" />
+                    
+                    {/* Badge de Ícone centralizado e suave */}
+                    <div className={`relative z-10 flex items-center gap-3 p-3.5 backdrop-blur-md rounded-xl border transition-all duration-300 ${currentContent.colorClass}`}>
+                      {currentContent.icon}
+                      <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">
+                        Estratégia e Ação de Impacto
+                      </span>
+                    </div>
+                  </div>
+
                   <div>
                     <Button 
                       variant="accent" 

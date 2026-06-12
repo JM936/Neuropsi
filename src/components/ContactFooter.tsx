@@ -337,9 +337,6 @@ export const ContactFooter: React.FC = () => {
 
         {/* Slogan Oficial em Destaque */}
         <div className="border-t border-b border-neuro-border/30 py-8 mb-12 text-center">
-          <p className="text-xs uppercase tracking-[0.25em] font-semibold text-neuro-accent mb-2">
-            Slogan Oficial
-          </p>
           <p className="text-lg sm:text-xl md:text-2xl font-bold font-title text-gradient-primary">
             "Ciência, Comportamento e Estratégia para Transformar Vidas e Instituições"
           </p>

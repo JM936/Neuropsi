@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '../../hooks/useTheme';
 
 interface Particle {
   x: number;
@@ -11,6 +12,7 @@ interface Particle {
 
 export const NeuralCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -177,7 +179,9 @@ export const NeuralCanvas: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none block transition-opacity duration-500 mix-blend-screen"
+      className={`absolute inset-0 pointer-events-none block transition-opacity duration-500 ${
+        theme === 'dark' ? 'mix-blend-screen opacity-100' : 'mix-blend-normal opacity-60'
+      }`}
     />
   );
 };

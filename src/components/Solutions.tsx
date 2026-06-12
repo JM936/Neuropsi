@@ -169,7 +169,7 @@ export const Solutions: React.FC = () => {
                     <img 
                       src={currentContent.image} 
                       alt={currentContent.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" 
+                      className="absolute inset-0 w-full h-full object-cover opacity-20 solutions-image-bg group-hover:scale-105 transition-transform duration-700" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-neuro-darkBgLight/80 via-transparent to-neuro-darkBgLight/45" />
                     

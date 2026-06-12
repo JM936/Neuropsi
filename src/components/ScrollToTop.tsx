@@ -5,6 +5,7 @@ export const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Executa o scroll instantâneo para o topo sem animações de rolagem
     window.scrollTo(0, 0);
   }, [pathname]);
 

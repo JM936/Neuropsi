@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { ContactFooter } from './components/ContactFooter';
 import { ScrollToTop } from './components/ScrollToTop';
+import { PageTransition } from './components/UI/PageTransition';
 
 // Importação das Páginas do Site
 import { Home } from './pages/Home';
@@ -29,19 +30,19 @@ const App: React.FC = () => {
         {/* Rotas Principais do Site */}
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/sobre" element={<AboutPage />} />
-            <Route path="/pilares" element={<PilaresPage />} />
-            <Route path="/solucoes" element={<SolutionsPage />} />
-            <Route path="/formacoes" element={<FormationsPage />} />
-            <Route path="/diferenciais" element={<DiferenciaisPage />} />
-            <Route path="/presidente" element={<PresidentPage />} />
-            <Route path="/impacto" element={<SocialImpactPage />} />
-            <Route path="/contato" element={<ContactPage />} />
-            <Route path="/privacidade" element={<PrivacyPage />} />
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/sobre" element={<PageTransition><AboutPage /></PageTransition>} />
+            <Route path="/pilares" element={<PageTransition><PilaresPage /></PageTransition>} />
+            <Route path="/solucoes" element={<PageTransition><SolutionsPage /></PageTransition>} />
+            <Route path="/formacoes" element={<PageTransition><FormationsPage /></PageTransition>} />
+            <Route path="/diferenciais" element={<PageTransition><DiferenciaisPage /></PageTransition>} />
+            <Route path="/presidente" element={<PageTransition><PresidentPage /></PageTransition>} />
+            <Route path="/impacto" element={<PageTransition><SocialImpactPage /></PageTransition>} />
+            <Route path="/contato" element={<PageTransition><ContactPage /></PageTransition>} />
+            <Route path="/privacidade" element={<PageTransition><PrivacyPage /></PageTransition>} />
             
             {/* Redirecionamento de rotas inexistentes para a Home */}
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<PageTransition><Home /></PageTransition>} />
           </Routes>
         </main>
 

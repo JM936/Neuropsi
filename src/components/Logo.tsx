@@ -11,11 +11,20 @@ export const Logo: React.FC<LogoProps> = ({
   showText = true,
   hideTagline = false,
   className = 'h-12',
-  variant = 'light'
+  variant
 }) => {
-  const textColor = variant === 'light' ? 'text-white' : 'text-neuro-darkBg';
-  const subtitleColor = variant === 'light' ? 'text-neuro-accent' : 'text-neuro-primary';
-  const sloganColor = variant === 'light' ? 'text-neuro-textSecondary' : 'text-neuro-textMuted';
+  // Se variant for fornecida, usamos a cor chumbada. Caso contrário (padrão), usamos as classes dinâmicas de tema.
+  const textColor = variant 
+    ? (variant === 'light' ? 'text-white' : 'text-neuro-darkBg') 
+    : 'text-neuro-textPrimary';
+    
+  const subtitleColor = variant 
+    ? (variant === 'light' ? 'text-neuro-accent' : 'text-neuro-primary') 
+    : 'text-neuro-accent';
+    
+  const sloganColor = variant 
+    ? (variant === 'light' ? 'text-neuro-textSecondary' : 'text-neuro-textMuted') 
+    : 'text-neuro-textSecondary';
 
   return (
     <div className={`flex items-center gap-3 select-none logo-container ${className}`}>

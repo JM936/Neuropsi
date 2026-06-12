@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, ArrowRight, Contrast } from 'lucide-react';
+import { Menu, X, ArrowRight, Sun, Moon } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from './UI/Button';
+import { useTheme } from '../hooks/useTheme';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,16 +43,7 @@ export const Navbar: React.FC = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const [highContrast, setHighContrast] = useState(false);
-
-  const toggleHighContrast = () => {
-    setHighContrast(!highContrast);
-    if (!highContrast) {
-      document.body.classList.add('high-contrast-mode');
-    } else {
-      document.body.classList.remove('high-contrast-mode');
-    }
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
@@ -107,12 +99,16 @@ export const Navbar: React.FC = () => {
               ))}
               
               <button
-                onClick={toggleHighContrast}
+                onClick={toggleTheme}
                 className="p-2 rounded-lg text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/40 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
-                aria-label="Alternar modo de alto contraste"
-                title="Alternar Alto Contraste"
+                aria-label={theme === 'light' ? 'Alternar para tema escuro' : 'Alternar para tema claro'}
+                title={theme === 'light' ? 'Ativar Tema Escuro' : 'Ativar Tema Claro'}
               >
-                <Contrast size={20} className={highContrast ? 'text-neuro-accent' : ''} />
+                {theme === 'light' ? (
+                  <Moon size={20} className="text-neuro-primary" />
+                ) : (
+                  <Sun size={20} className="text-neuro-highlight" />
+                )}
               </button>
               
               <Link to="/contato">
@@ -207,16 +203,20 @@ export const Navbar: React.FC = () => {
 
               <div className="pt-6 border-t border-neuro-border mt-auto flex flex-col gap-4">
                 <button
-                  onClick={toggleHighContrast}
+                  onClick={toggleTheme}
                   className="w-full py-3 px-4 rounded-lg bg-neuro-cardBg/60 border border-neuro-border text-neuro-textPrimary flex items-center justify-between text-sm font-semibold hover:bg-neuro-cardBg/90 transition-colors min-h-[44px]"
-                  aria-label="Alternar modo de alto contraste"
+                  aria-label={theme === 'light' ? 'Alternar para tema escuro' : 'Alternar para tema claro'}
                 >
                   <span className="flex items-center gap-2">
-                    <Contrast size={18} />
-                    Alto Contraste
+                    {theme === 'light' ? (
+                      <Moon size={18} className="text-neuro-primary" />
+                    ) : (
+                      <Sun size={18} className="text-neuro-highlight" />
+                    )}
+                    Tema
                   </span>
                   <span className="text-xs text-neuro-accent uppercase tracking-wider font-bold">
-                    {highContrast ? 'Ativo' : 'Desativado'}
+                    {theme === 'light' ? 'Claro' : 'Escuro'}
                   </span>
                 </button>
 

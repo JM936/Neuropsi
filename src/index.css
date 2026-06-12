@@ -2,16 +2,67 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --neuro-bg: #03071E;
+  --neuro-bg-light: #0A0F2C;
+  --neuro-card-bg: rgba(10, 20, 60, 0.45);
+  --neuro-border: rgba(99, 102, 241, 0.15);
+  --neuro-primary: #3F37C9;
+  --neuro-primary-hover: #4895EF;
+  --neuro-accent: #10B981;
+  --neuro-accent-hover: #059669;
+  --neuro-highlight: #F59E0B;
+  --neuro-magenta: #D90429;
+  --neuro-text-primary: #F8FAFC;
+  --neuro-text-secondary: #94A3B8;
+  --neuro-text-muted: #64748B;
+}
+
+.light-mode {
+  --neuro-bg: #F8FAFC;
+  --neuro-bg-light: #F1F5F9;
+  --neuro-card-bg: rgba(255, 255, 255, 0.7);
+  --neuro-border: rgba(99, 102, 241, 0.12);
+  --neuro-primary: #3F37C9;
+  --neuro-primary-hover: #4895EF;
+  --neuro-accent: #059669;
+  --neuro-accent-hover: #047857;
+  --neuro-highlight: #D97706;
+  --neuro-magenta: #C20024;
+  --neuro-text-primary: #0F172A;
+  --neuro-text-secondary: #475569;
+  --neuro-text-muted: #64748B;
+}
+
+/* Correções de contraste e legibilidade para o tema Claro */
+.light-mode h1.text-white,
+.light-mode h2.text-white,
+.light-mode h3.text-white,
+.light-mode h4.text-white,
+.light-mode h5.text-white,
+.light-mode h6.text-white {
+  color: var(--neuro-text-primary) !important;
+}
+
+.light-mode input,
+.light-mode textarea {
+  color: var(--neuro-text-primary) !important;
+}
+
+.light-mode .hover\:text-white:hover {
+  color: var(--neuro-primary) !important;
+}
+
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
   
   body {
-    background-color: #03071E;
-    color: #F8FAFC;
+    background-color: var(--neuro-bg);
+    color: var(--neuro-text-primary);
     font-family: 'Inter', sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -23,19 +74,19 @@
 @layer utilities {
   /* Efeito de Glassmorphism Premium com Blur Otimizado para Mobile */
   .bg-glass {
-    background: rgba(10, 15, 40, 0.45);
+    background: var(--neuro-card-bg);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(99, 102, 241, 0.1);
-    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    border: 1px solid var(--neuro-border);
+    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, background 0.3s ease, border-color 0.3s ease;
   }
   
   .bg-glass-card {
-    background: linear-gradient(135deg, rgba(10, 20, 60, 0.4) 0%, rgba(5, 10, 30, 0.6) 100%);
+    background: linear-gradient(135deg, var(--neuro-card-bg) 0%, rgba(5, 10, 30, 0.03) 100%);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(99, 102, 241, 0.08);
-    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--neuro-border);
+    transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
   }
 
   @media (min-width: 768px) {
@@ -96,7 +147,7 @@
 
   /* Gradiente do texto de títulos */
   .text-gradient {
-    background: linear-gradient(135deg, #F8FAFC 30%, #94A3B8 100%);
+    background: linear-gradient(135deg, var(--neuro-text-primary) 30%, var(--neuro-text-secondary) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -151,7 +202,7 @@
   }
   
   ::-webkit-scrollbar-track {
-    background: #03071E;
+    background: var(--neuro-bg);
   }
   
   ::-webkit-scrollbar-thumb {
@@ -161,5 +212,10 @@
   
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(99, 102, 241, 0.5);
+  }
+  
+  /* Ajuste de opacidade para ilustrações no modo claro */
+  .light-mode .solutions-image-bg {
+    opacity: 0.45 !important;
   }
 }

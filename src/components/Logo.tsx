@@ -2,12 +2,14 @@ import React from 'react';
 
 interface LogoProps {
   showText?: boolean;
+  hideTagline?: boolean;
   className?: string;
   variant?: 'light' | 'dark';
 }
 
 export const Logo: React.FC<LogoProps> = ({
   showText = true,
+  hideTagline = false,
   className = 'h-12',
   variant = 'light'
 }) => {
@@ -17,7 +19,7 @@ export const Logo: React.FC<LogoProps> = ({
 
   return (
     <div className={`flex items-center gap-3 select-none logo-container ${className}`}>
-      {/* Ícone Vetorial SVG do Instituto NeuroPsi (Representação fiel do Logo) */}
+      {/* Ícone Vetorial SVG do Instituto de Neuropsicopedagogia (Representação fiel do Logo) */}
       <svg
         className="h-10 w-10 flex-shrink-0"
         viewBox="0 0 200 200"
@@ -131,9 +133,11 @@ export const Logo: React.FC<LogoProps> = ({
           <span className={`text-sm font-bold tracking-wider uppercase font-title ${textColor}`}>
             Neuropsicopedagogia
           </span>
-          <span className={`text-[9px] tracking-[0.11em] font-semibold uppercase ${subtitleColor}`}>
-            Aplicada e Educação Inclusiva
-          </span>
+          {!hideTagline && (
+            <span className={`text-[9px] tracking-[0.11em] font-semibold uppercase ${subtitleColor}`}>
+              Aplicada e Educação Inclusiva
+            </span>
+          )}
         </div>
       )}
     </div>

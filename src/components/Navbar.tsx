@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { NavLink, Link } from 'react-router-dom';
 import { Menu, X, ArrowRight, Contrast } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from './UI/Button';
-import { useScrollAnchor } from '../hooks/useScrollAnchor';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const sections = [
-    { id: 'hero', name: 'Início' },
-    { id: 'about', name: 'Quem Somos' },
-    { id: 'pilares', name: 'Pilares' },
-    { id: 'solutions', name: 'Soluções' },
-    { id: 'formations', name: 'Formações' },
-    { id: 'diferenciais', name: 'Diferenciais' },
-    { id: 'president', name: 'Presidente' },
-    { id: 'impact', name: 'Impacto' }
+  const desktopSections = [
+    { path: '/', name: 'Início' },
+    { path: '/sobre', name: 'Quem Somos' },
+    { path: '/solucoes', name: 'Soluções' },
+    { path: '/formacoes', name: 'Formações' }
   ];
 
-  const sectionIds = sections.map(s => s.id).concat(['contact']);
-  const activeSection = useScrollAnchor(sectionIds, 120);
+  const mobileSections = [
+    { path: '/', name: 'Início' },
+    { path: '/sobre', name: 'Quem Somos' },
+    { path: '/pilares', name: 'Pilares' },
+    { path: '/solucoes', name: 'Soluções' },
+    { path: '/formacoes', name: 'Formações' },
+    { path: '/diferenciais', name: 'Diferenciais' },
+    { path: '/presidente', name: 'Presidente' },
+    { path: '/impacto', name: 'Impacto' }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,21 +53,6 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const handleNavClick = (id: string) => {
-    setIsOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 90;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
     <>
       <motion.nav
@@ -79,37 +68,42 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logotipo */}
-            <a 
-              href="#hero" 
-              onClick={(e) => { e.preventDefault(); handleNavClick('hero'); }}
+            <Link 
+              to="/" 
               className="flex items-center"
-              aria-label="Ir para a seção inicial do Instituto NeuroPsi"
+              aria-label="Ir para a seção inicial do Instituto de Neuropsicopedagogia"
             >
-              <Logo showText={true} className="h-10" />
-            </a>
+              <Logo showText={true} hideTagline={true} className="h-10" />
+            </Link>
 
             {/* Menu Desktop */}
-            <div className="hidden lg:flex items-center gap-6">
-              {sections.map((sec) => (
-                <a
-                  key={sec.id}
-                  href={`#${sec.id}`}
-                  onClick={(e) => { e.preventDefault(); handleNavClick(sec.id); }}
-                  className={`text-sm font-medium tracking-wide transition-colors duration-200 relative py-2 ${
-                    activeSection === sec.id 
-                      ? 'text-neuro-accent' 
-                      : 'text-neuro-textSecondary hover:text-neuro-textPrimary'
-                  }`}
+            <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+              {desktopSections.map((sec) => (
+                <NavLink
+                  key={sec.path}
+                  to={sec.path}
+                  end={sec.path === '/'}
+                  className={({ isActive }) =>
+                    `text-xs lg:text-sm font-medium tracking-wide transition-colors duration-200 relative py-2 ${
+                      isActive 
+                        ? 'text-neuro-accent font-semibold' 
+                        : 'text-neuro-textSecondary hover:text-neuro-textPrimary'
+                    }`
+                  }
                 >
-                  {sec.name}
-                  {activeSection === sec.id && (
-                    <motion.span 
-                      layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-neuro-accent rounded-full"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
+                  {({ isActive }) => (
+                    <>
+                      {sec.name}
+                      {isActive && (
+                        <motion.span 
+                          layoutId="activeIndicator"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-neuro-accent rounded-full"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </>
                   )}
-                </a>
+                </NavLink>
               ))}
               
               <button
@@ -121,15 +115,16 @@ export const Navbar: React.FC = () => {
                 <Contrast size={20} className={highContrast ? 'text-neuro-accent' : ''} />
               </button>
               
-              <Button 
-                variant="primary" 
-                size="sm"
-                className="ml-2 gap-2"
-                onClick={() => handleNavClick('contact')}
-              >
-                Falar com a Equipe
-                <ArrowRight size={16} />
-              </Button>
+              <Link to="/contato">
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  className="gap-2"
+                >
+                  Falar com a Equipe
+                  <ArrowRight size={16} />
+                </Button>
+              </Link>
             </div>
 
             {/* Hamburguer Botão Mobile */}
@@ -180,7 +175,7 @@ export const Navbar: React.FC = () => {
               transition={{ type: 'spring', bounce: 0.1, duration: 0.4 }}
             >
               <div className="flex items-center justify-between mb-8">
-                <Logo showText={true} className="h-10" />
+                <Logo showText={true} hideTagline={true} className="h-10" />
                 <button
                   onClick={toggleMenu}
                   className="p-2 rounded-md text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -191,19 +186,22 @@ export const Navbar: React.FC = () => {
               </div>
 
               <div className="flex flex-col gap-4 overflow-y-auto flex-grow pr-2">
-                {sections.map((sec) => (
-                  <a
-                    key={sec.id}
-                    href={`#${sec.id}`}
-                    onClick={(e) => { e.preventDefault(); handleNavClick(sec.id); }}
-                    className={`text-base font-semibold py-3 px-4 rounded-lg transition-all duration-200 ${
-                      activeSection === sec.id
-                        ? 'bg-neuro-primary/20 text-neuro-accent border-l-4 border-neuro-accent'
-                        : 'text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/30'
-                    }`}
+                {mobileSections.map((sec) => (
+                  <NavLink
+                    key={sec.path}
+                    to={sec.path}
+                    end={sec.path === '/'}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      `text-base font-semibold py-3 px-4 rounded-lg transition-all duration-200 ${
+                        isActive
+                          ? 'bg-neuro-primary/20 text-neuro-accent border-l-4 border-neuro-accent'
+                          : 'text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/30'
+                      }`
+                    }
                   >
                     {sec.name}
-                  </a>
+                  </NavLink>
                 ))}
               </div>
 
@@ -222,15 +220,16 @@ export const Navbar: React.FC = () => {
                   </span>
                 </button>
 
-                <Button 
-                  variant="primary" 
-                  fullWidth 
-                  className="gap-2"
-                  onClick={() => handleNavClick('contact')}
-                >
-                  Falar com a Equipe
-                  <ArrowRight size={18} />
-                </Button>
+                <Link to="/contato" className="w-full" onClick={() => setIsOpen(false)}>
+                  <Button 
+                    variant="primary" 
+                    fullWidth 
+                    className="gap-2"
+                  >
+                    Falar com a Equipe
+                    <ArrowRight size={18} />
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </>

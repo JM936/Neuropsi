@@ -58,7 +58,7 @@ export const About: React.FC = () => {
               </h2>
               <div className="text-neuro-textSecondary space-y-4 leading-relaxed text-base">
                 <p>
-                  O <strong>Instituto NeuroPsi</strong> nasceu da urgente necessidade de construir pontes sólidas entre a ciência do cérebro e as demandas práticas da sociedade. Unimos a <strong>Neurociência Aplicada</strong>, a <strong>Educação Inclusiva</strong>, a <strong>Saúde Pública</strong> e a <strong>Segurança Pública</strong> em um ecossistema integrado de soluções corporativas e educacionais.
+                  O <strong>Instituto de Neuropsicopedagogia</strong> nasceu da urgente necessidade de construir pontes sólidas entre a ciência do cérebro e as demandas práticas da sociedade. Unimos a <strong>Neurociência Aplicada</strong>, a <strong>Educação Inclusiva</strong>, a <strong>Saúde Pública</strong> e a <strong>Segurança Pública</strong> em um ecossistema integrado de soluções corporativas e educacionais.
                 </p>
                 <p>
                   Nossa atuação é focada em criar metodologias de ponta, capacitar profissionais e desenvolver protocolos baseados em evidências que geram resultados concretos e mensuráveis para instituições públicas e privadas em todo o país.

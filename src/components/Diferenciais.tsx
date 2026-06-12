@@ -79,7 +79,7 @@ export const Diferenciais: React.FC = () => {
             Diferenciais Competitivos
           </h2>
           <p className="text-neuro-textSecondary text-base sm:text-lg">
-            Por que o Instituto NeuroPsi é a escolha ideal para capacitar sua equipe e assessorar seus projetos institucionais.
+            Por que o Instituto de Neuropsicopedagogia é a escolha ideal para capacitar sua equipe e assessorar seus projetos institucionais.
           </p>
         </div>
 

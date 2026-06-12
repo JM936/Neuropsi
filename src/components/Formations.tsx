@@ -1,122 +1,162 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, BookOpen, GraduationCap, X, Eye } from 'lucide-react';
+import { Clock, BookOpen, GraduationCap, X, Eye, AlertCircle } from 'lucide-react';
 import { Button } from './UI/Button';
+import { supabase } from '../lib/supabase';
 import type { Formacao } from '../types';
 
-export const Formations: React.FC = () => {
-  const [selectedCourse, setSelectedCourse] = useState<Formacao | null>(null);
+interface FormationRow {
+  id: string;
+  title: string;
+  badge: string | null;
+  tagline: string;
+  duration: string;
+  modality: string;
+  description: string;
+  modules: string[];
+  public_target: string;
+  created_at: string;
+}
 
-  const formacoes: Formacao[] = [
-    {
-      id: 'neuropsicopedagogia',
-      title: 'Neuropsicopedagogia Aplicada®',
-      badge: 'Especialização',
-      tagline: 'Diagnóstico e intervenção de dificuldades de aprendizagem sob o prisma da neurociência.',
-      duration: '360 horas',
-      modality: 'Híbrido (Online + Prática)',
-      description: 'Esta pós-graduação avançada capacita profissionais para atuar na identificação de transtornos e distúrbios de aprendizagem, formulando estratégias de reabilitação e intervenção cognitiva em âmbitos clínico e institucional.',
-      modules: [
-        'Fundamentos de Neuroanatomia Cognitiva',
-        'Neuropsicofisiologia da Aprendizagem',
-        'Processamento da Leitura, Escrita e Cálculo',
-        'Avaliação Neuropsicopedagógica Clínica',
-        'Intervenção e Reabilitação Neuropsicopedagógica',
-        'Estudo Clínico de Casos Práticos'
-      ],
-      publicTarget: 'Pedagogos, psicólogos, fonoaudiólogos, terapeutas ocupacionais e licenciados em geral.'
-    },
-    {
-      id: 'neuroeducacao',
-      title: 'Neuroeducação®',
-      badge: 'Capacitação',
-      tagline: 'Aplicação prática do funcionamento cerebral no design de aulas e retenção de alunos.',
-      duration: '240 horas',
-      modality: '100% Online (Aulas ao vivo)',
-      description: 'Uma formação moderna e dinâmica desenvolvida para educadores que desejam estruturar suas aulas com base nas evidências científicas de como o cérebro recebe, codifica, armazena e recupera informações.',
-      modules: [
-        'Como o Cérebro Aprende (Neurobiologia)',
-        'Neuroplasticidade e Aprendizado ao Longo da Vida',
-        'Atenção, Memória e Emoção no Processo de Ensino',
-        'Metodologias Ativas Baseadas em Evidências',
-        'Tecnologia, Telas e a Mente do Estudante Moderno',
-        'Avaliação Formativa Inteligente'
-      ],
-      publicTarget: 'Professores da Educação Infantil ao Ensino Superior, tutores, gestores escolares e designers instrucionais.'
-    },
-    {
-      id: 'educacao-inclusiva',
-      title: 'Educação Inclusiva®',
-      badge: 'Formação Prática',
-      tagline: 'Metodologias adaptativas e ferramentas reais para a inclusão em sala de aula.',
-      duration: '280 horas',
-      modality: 'Híbrido',
-      description: 'Fornece subsídios conceituais e ferramentas instrumentais para atender alunos com transtornos do neurodesenvolvimento (Autismo, TDAH, Dislexia) promovendo acessibilidade curricular estruturada.',
-      modules: [
-        'Direitos Humanos e Legislação da Inclusão',
-        'Transtornos e Condições do Neurodesenvolvimento (TEA, TDAH, DI)',
-        'Princípios do Desenho Universal para a Aprendizagem (DUA)',
-        'Desenvolvimento do Plano de Ensino Individualizado (PEI)',
-        'Adaptação Curricular Prática',
-        'Comunicação Alternativa e Aumentativa (CAA)'
-      ],
-      publicTarget: 'Professores regentes, auxiliares de inclusão, cuidadores escolares, pedagogos e familiares.'
-    },
-    {
-      id: 'neurogestao',
-      title: 'Neurogestão®',
-      badge: 'Liderança',
-      tagline: 'Gestão de pessoas e tomada de decisões sob a ótica das neurociências.',
-      duration: '180 horas',
-      modality: 'Presencial ou In-Company',
-      description: 'Focado em líderes e executivos públicos ou privados, este programa ensina a otimizar a tomada de decisão sob pressão, gerenciar o estresse corporativo e criar ambientes de alta performance e segurança psicológica.',
-      modules: [
-        'Neurociência da Liderança e Decisão',
-        'Inteligência Emocional e Regulação de Estresse',
-        'Dinâmicas de Equipes e Segurança Psicológica',
-        'Neurocomunicação e Feedback de Alto Impacto',
-        'Gestão de Mudanças Corporativas',
-        'Ergonomia Mental no Trabalho'
-      ],
-      publicTarget: 'Diretores, gerentes, coordenadores, analistas de RH e profissionais em cargos de liderança.'
-    },
-    {
-      id: 'seguranca-inclusiva',
-      title: 'Segurança Pública Inclusiva®',
-      badge: 'Protocolo Exclusivo',
-      tagline: 'Treinamento tático e comunicação humanizada para abordagem a neurodiversos.',
-      duration: '120 horas',
-      modality: 'Presencial / Prático',
-      description: 'Programa inédito que capacita as forças de segurança a lidar com surtos psicóticos, crises em pessoas com autismo e situações extremas envolvendo neurodiversos, aplicando técnicas de desescalada e empatia tática.',
-      modules: [
-        'Neurodiversidade no Espaço Público',
-        'Reconhecimento Visual e Comportamental de Crises',
-        'Técnicas de Comunicação Não-Violenta e Desescalada',
-        'Protocolo de Abordagem Tática Inclusiva',
-        'Gerenciamento de Crises em TEA e Saúde Mental',
-        'Direitos Humanos, Legislação e Segurança Cidadã'
-      ],
-      publicTarget: 'Policiais Militares e Civis, Guardas Municipais (GCM), Agentes de Trânsito, Defesa Civil e Bombeiros.'
-    },
-    {
-      id: 'missionaria-nascer-de-novo',
-      title: 'Missionária Nascer de Novo®',
-      badge: 'Social & Humanitário',
-      tagline: 'Capacitação psicossocial e acolhimento em comunidades vulneráveis.',
-      duration: '160 horas',
-      modality: 'Híbrido',
-      description: 'Programa social voltado ao desenvolvimento de agentes humanitários aptos a realizar triagem primária, escuta qualificada e acolhimento a populações vulneráveis e indivíduos em reabilitação psicossocial.',
-      modules: [
-        'Fundamentos do Acolhimento Humanitário',
-        'Vulnerabilidade Social e Neurodesenvolvimento',
-        'Noções de Saúde Mental e Toxicologia',
-        'Técnicas de Escuta Ativa e Apoio Emocional',
-        'Rede de Apoio: Parceria com Saúde e Assistência Social',
-        'Desenvolvimento de Projetos Sociais Comunitários'
-      ],
-      publicTarget: 'Líderes de ONGs, capelães, voluntários de instituições de caridade e agentes comunitários.'
+export const Formations: React.FC = () => {
+  const [formacoes, setFormacoes] = useState<Formacao[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<Formacao | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchFormations = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('formations')
+        .select('*');
+
+      if (fetchError) {
+        throw fetchError;
+      }
+
+      // Mapeamento tipado e seguro de snake_case para camelCase
+      const mappedFormations: Formacao[] = (data as FormationRow[] || []).map((item) => ({
+        id: item.id,
+        title: item.title,
+        badge: item.badge || undefined,
+        tagline: item.tagline,
+        duration: item.duration,
+        modality: item.modality,
+        description: item.description,
+        modules: item.modules,
+        publicTarget: item.public_target
+      }));
+
+      // Ordena as formações alfabeticamente pelo título
+      mappedFormations.sort((a, b) => a.title.localeCompare(b.title));
+
+      setFormacoes(mappedFormations);
+    } catch (err) {
+      console.error('Erro ao buscar as formações:', err);
+      setError('Desculpe, ocorreu um problema ao carregar os programas de formação. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    let active = true;
+
+    const loadInitialFormations = async () => {
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('formations')
+          .select('*');
+
+        if (fetchError) {
+          throw fetchError;
+        }
+
+        if (!active) return;
+
+        const mappedFormations: Formacao[] = (data as FormationRow[] || []).map((item) => ({
+          id: item.id,
+          title: item.title,
+          badge: item.badge || undefined,
+          tagline: item.tagline,
+          duration: item.duration,
+          modality: item.modality,
+          description: item.description,
+          modules: item.modules,
+          publicTarget: item.public_target
+        }));
+
+        mappedFormations.sort((a, b) => a.title.localeCompare(b.title));
+
+        setFormacoes(mappedFormations);
+      } catch (err) {
+        console.error('Erro ao buscar as formações na inicialização:', err);
+        if (active) {
+          setError('Desculpe, ocorreu um problema ao carregar os programas de formação. Por favor, tente novamente.');
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadInitialFormations();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Renderização do Loader de Esqueleto Premium (Skeleton) com pulsação
+  if (loading) {
+    return (
+      <section id="formations" className="py-20 bg-neuro-darkBg relative overflow-hidden animate-fade-in">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-neuro-primary/5 rounded-full blur-3xl -z-10" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-pulse">
+            <div className="h-4 w-28 bg-white/10 mx-auto rounded mb-3" />
+            <div className="h-10 w-80 bg-white/10 mx-auto rounded mb-4" />
+            <div className="h-6 w-96 bg-white/10 mx-auto rounded" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="p-6 bg-glass-card rounded-2xl border border-neuro-border flex flex-col justify-between shadow-glass h-[320px] animate-pulse">
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="h-6 w-24 bg-white/10 rounded-full" />
+                    <div className="h-4 w-16 bg-white/10 rounded" />
+                  </div>
+                  <div className="h-6 w-3/4 bg-white/10 rounded mb-4" />
+                  <div className="h-4 w-full bg-white/10 rounded mb-2" />
+                  <div className="h-4 w-5/6 bg-white/10 rounded" />
+                </div>
+                <div className="pt-4 border-t border-white/5 h-10 w-full bg-white/10 rounded-lg mt-auto" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Renderização de Degradamento Suave em Caso de Erro
+  if (error) {
+    return (
+      <section id="formations" className="py-20 bg-neuro-darkBg relative overflow-hidden flex items-center justify-center min-h-[50vh]">
+        <div className="text-center max-w-md p-8 bg-glass border border-red-500/30 rounded-2xl shadow-glass mx-4">
+          <AlertCircle className="text-red-400 mx-auto mb-4" size={48} />
+          <h3 className="text-lg font-bold text-white mb-2">Erro de Carregamento</h3>
+          <p className="text-sm text-neuro-textSecondary mb-6">{error}</p>
+          <Button variant="primary" onClick={fetchFormations} className="min-h-[44px] px-6">
+            Tentar Novamente
+          </Button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="formations" className="py-20 bg-neuro-darkBg relative overflow-hidden">

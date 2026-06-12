@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '../components/UI/Button';
+import { supabase } from '../lib/supabase';
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -43,30 +44,15 @@ export const ContactPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setStatus('submitting');
     
-    setTimeout(() => {
-      try {
-        // Se o honeypot estiver preenchido, simulamos sucesso silenciosamente contra bots
-        if (honeypot.trim()) {
-          setStatus('success');
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            institution: '',
-            role: '',
-            message: ''
-          });
-          setHoneypot('');
-          setAcceptedPrivacy(false);
-          return;
-        }
-
+    try {
+      // Se o honeypot estiver preenchido, simulamos sucesso silenciosamente contra bots (proteção básica)
+      if (honeypot.trim()) {
         setStatus('success');
         setFormData({
           name: '',
@@ -78,10 +64,42 @@ export const ContactPage: React.FC = () => {
         });
         setHoneypot('');
         setAcceptedPrivacy(false);
-      } catch {
-        setStatus('error');
+        return;
       }
-    }, 1500);
+
+      // Envia os dados de contato de forma estruturada e assíncrona ao Supabase
+      const { error } = await supabase
+        .from('contacts')
+        .insert([
+          {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            institution: formData.institution.trim() || null,
+            role: formData.role.trim() || null,
+            message: formData.message.trim()
+          }
+        ]);
+
+      if (error) {
+        throw error;
+      }
+
+      setStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        institution: '',
+        role: '',
+        message: ''
+      });
+      setHoneypot('');
+      setAcceptedPrivacy(false);
+    } catch (error) {
+      console.error('Erro ao registrar mensagem no Supabase:', error);
+      setStatus('error');
+    }
   };
 
   return (

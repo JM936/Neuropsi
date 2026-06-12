@@ -45,12 +45,11 @@ export const President: React.FC = () => {
               {/* Moldura da Imagem */}
               <div className="relative p-2 bg-neuro-darkBgLight border border-neuro-border rounded-2xl shadow-2xl">
                 <img 
-                  src="/images/president.png" 
-                  alt="Comendador Leonardo Leal" 
-                  className="rounded-xl w-full h-[400px] object-cover object-center bg-neuro-darkBg shadow-inner"
+                  src="/images/logo_symbol.webp" 
+                  alt="Logotipo do Instituto de Neuropsicopedagogia" 
+                  className="rounded-xl w-full h-[400px] object-contain p-8 bg-neuro-darkBgLight/50 shadow-inner logo-image-animate"
                   onError={(e) => {
-                    // Fallback se a imagem não carregar por algum motivo
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=776&auto=format&fit=crop";
+                    e.currentTarget.src = "/images/logo_symbol.webp";
                   }}
                 />
                 

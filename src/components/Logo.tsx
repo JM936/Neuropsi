@@ -29,7 +29,7 @@ export const Logo: React.FC<LogoProps> = ({
   return (
     <div className={`flex items-center gap-3 select-none logo-container ${className}`}>
       <img
-        src="/images/logo_symbol.png"
+        src="/images/logo_symbol.webp"
         alt="Logotipo do Instituto de Neuropsicopedagogia"
         className="h-full w-auto object-contain flex-shrink-0 logo-image-animate"
       />

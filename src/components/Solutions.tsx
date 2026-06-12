@@ -41,7 +41,7 @@ export const Solutions: React.FC = () => {
       ],
       ctaText: 'Falar com Consultor de Educação',
       bgGlow: 'bg-teal-500/5',
-      image: '/images/solutions_education.png',
+      image: '/images/solutions_education.webp',
       icon: <GraduationCap size={24} className="text-teal-400" />,
       colorClass: 'text-teal-400 border-teal-500/20 bg-teal-950/40'
     },
@@ -58,7 +58,7 @@ export const Solutions: React.FC = () => {
       ],
       ctaText: 'Falar com Consultor de Saúde',
       bgGlow: 'bg-rose-500/5',
-      image: '/images/solutions_health.png',
+      image: '/images/solutions_health.webp',
       icon: <HeartPulse size={24} className="text-rose-400" />,
       colorClass: 'text-rose-400 border-rose-500/20 bg-rose-950/40'
     },
@@ -75,7 +75,7 @@ export const Solutions: React.FC = () => {
       ],
       ctaText: 'Falar com Consultor de Segurança',
       bgGlow: 'bg-amber-500/5',
-      image: '/images/solutions_security.png',
+      image: '/images/solutions_security.webp',
       icon: <ShieldAlert size={24} className="text-amber-400" />,
       colorClass: 'text-amber-400 border-amber-500/20 bg-amber-950/40'
     }

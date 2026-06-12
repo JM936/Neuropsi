@@ -84,8 +84,25 @@ const DEFAULT_SOLUTIONS: Record<'educacao' | 'saude' | 'seguranca', SolutionData
 };
 
 export const useSolutions = () => {
-  const [solutions, setSolutions] = useState<Record<'educacao' | 'saude' | 'seguranca', SolutionData>>(DEFAULT_SOLUTIONS);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [solutions, setSolutions] = useState<Record<'educacao' | 'saude' | 'seguranca', SolutionData>>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_solutions');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (err) {
+      console.error('Erro ao ler soluções do sessionStorage:', err);
+    }
+    return DEFAULT_SOLUTIONS;
+  });
+  const [loading, setLoading] = useState<boolean>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_solutions');
+      return !cached;
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
     let active = true;
@@ -119,6 +136,11 @@ export const useSolutions = () => {
             }
           });
           setSolutions(fetchedMap);
+          try {
+            sessionStorage.setItem('neuropsi_solutions', JSON.stringify(fetchedMap));
+          } catch (storageErr) {
+            console.error('Erro ao salvar no sessionStorage:', storageErr);
+          }
         }
       } catch (err) {
         console.error('Erro ao buscar soluções do Supabase:', err);

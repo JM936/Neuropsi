@@ -1,11 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import * as LucideIcons from 'lucide-react';
+import { 
+  Brain, 
+  GraduationCap, 
+  HeartPulse, 
+  ShieldAlert 
+} from 'lucide-react';
 import { usePillars } from '../hooks/usePillars';
+
+// Dicionário de ícones locais para tree-shaking do Lucide
+const ICONS_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Brain,
+  GraduationCap,
+  HeartPulse,
+  ShieldAlert
+};
 
 // Renderização dinâmica dos ícones do Lucide
 const renderLucideIcon = (name: string, size = 32, className = "text-white") => {
-  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[name];
+  const IconComponent = ICONS_MAP[name];
   return IconComponent ? <IconComponent size={size} className={className} /> : null;
 };
 

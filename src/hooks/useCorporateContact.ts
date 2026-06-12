@@ -26,8 +26,25 @@ const DEFAULT_CONTACT_INFO: CorporateContact = {
 };
 
 export const useCorporateContact = () => {
-  const [contactInfo, setContactInfo] = useState<CorporateContact>(DEFAULT_CONTACT_INFO);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [contactInfo, setContactInfo] = useState<CorporateContact>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_corporate_contact');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (err) {
+      console.error('Erro ao ler contatos corporativos do sessionStorage:', err);
+    }
+    return DEFAULT_CONTACT_INFO;
+  });
+  const [loading, setLoading] = useState<boolean>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_corporate_contact');
+      return !cached;
+    } catch {
+      return true;
+    }
+  });
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -49,7 +66,7 @@ export const useCorporateContact = () => {
 
         if (data) {
           const row = data as CorporateContactRow;
-          setContactInfo({
+          const mappedContact: CorporateContact = {
             title: row.title,
             description: row.description,
             phone: row.phone,
@@ -57,7 +74,13 @@ export const useCorporateContact = () => {
             email: row.email,
             address: row.address,
             footerDisclaimer: row.footer_disclaimer
-          });
+          };
+          setContactInfo(mappedContact);
+          try {
+            sessionStorage.setItem('neuropsi_corporate_contact', JSON.stringify(mappedContact));
+          } catch (storageErr) {
+            console.error('Erro ao salvar no sessionStorage:', storageErr);
+          }
         }
       } catch (err) {
         console.error('Erro ao carregar contato corporativo do Supabase:', err);

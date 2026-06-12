@@ -1,12 +1,27 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as LucideIcons from 'lucide-react';
+import { 
+  GraduationCap, 
+  HeartPulse, 
+  ShieldAlert, 
+  ArrowRight, 
+  CheckCircle2 
+} from 'lucide-react';
 import { useSolutions } from '../hooks/useSolutions';
 import { Button } from './UI/Button';
 
+// Dicionário de ícones locais para tree-shaking do Lucide
+const ICONS_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  GraduationCap,
+  HeartPulse,
+  ShieldAlert,
+  ArrowRight,
+  CheckCircle2
+};
+
 // Mapeamento dinâmico e seguro de ícones do Lucide
 const renderLucideIcon = (name: string, size = 20, className = "") => {
-  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[name];
+  const IconComponent = ICONS_MAP[name];
   return IconComponent ? <IconComponent size={size} className={className} /> : null;
 };
 

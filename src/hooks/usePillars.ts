@@ -68,8 +68,25 @@ const DEFAULT_PILLARS: PillarData[] = [
 ];
 
 export const usePillars = () => {
-  const [pillars, setPillars] = useState<PillarData[]>(DEFAULT_PILLARS);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [pillars, setPillars] = useState<PillarData[]>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_pillars');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (err) {
+      console.error('Erro ao ler pilares do sessionStorage:', err);
+    }
+    return DEFAULT_PILLARS;
+  });
+  const [loading, setLoading] = useState<boolean>(() => {
+    try {
+      const cached = sessionStorage.getItem('neuropsi_pillars');
+      return !cached;
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
     let active = true;
@@ -97,6 +114,11 @@ export const usePillars = () => {
             iconName: row.icon_name
           }));
           setPillars(mapped);
+          try {
+            sessionStorage.setItem('neuropsi_pillars', JSON.stringify(mapped));
+          } catch (storageErr) {
+            console.error('Erro ao salvar no sessionStorage:', storageErr);
+          }
         }
       } catch (err) {
         console.error('Erro ao buscar pilares do Supabase:', err);

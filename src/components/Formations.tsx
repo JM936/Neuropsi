@@ -1,114 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, BookOpen, GraduationCap, X, Eye, AlertCircle } from 'lucide-react';
 import { Button } from './UI/Button';
-import { supabase } from '../lib/supabase';
+import { useFormations } from '../hooks/useFormations';
 import type { Formacao } from '../types';
 
-interface FormationRow {
-  id: string;
-  title: string;
-  badge: string | null;
-  tagline: string;
-  duration: string;
-  modality: string;
-  description: string;
-  modules: string[];
-  public_target: string;
-  created_at: string;
-}
-
 export const Formations: React.FC = () => {
-  const [formacoes, setFormacoes] = useState<Formacao[]>([]);
+  const { formacoes, loading, error, refetch } = useFormations();
   const [selectedCourse, setSelectedCourse] = useState<Formacao | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchFormations = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('formations')
-        .select('*');
-
-      if (fetchError) {
-        throw fetchError;
-      }
-
-      // Mapeamento tipado e seguro de snake_case para camelCase
-      const mappedFormations: Formacao[] = (data as FormationRow[] || []).map((item) => ({
-        id: item.id,
-        title: item.title,
-        badge: item.badge || undefined,
-        tagline: item.tagline,
-        duration: item.duration,
-        modality: item.modality,
-        description: item.description,
-        modules: item.modules,
-        publicTarget: item.public_target
-      }));
-
-      // Ordena as formações alfabeticamente pelo título
-      mappedFormations.sort((a, b) => a.title.localeCompare(b.title));
-
-      setFormacoes(mappedFormations);
-    } catch (err) {
-      console.error('Erro ao buscar as formações:', err);
-      setError('Desculpe, ocorreu um problema ao carregar os programas de formação. Por favor, tente novamente.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    let active = true;
-
-    const loadInitialFormations = async () => {
-      try {
-        const { data, error: fetchError } = await supabase
-          .from('formations')
-          .select('*');
-
-        if (fetchError) {
-          throw fetchError;
-        }
-
-        if (!active) return;
-
-        const mappedFormations: Formacao[] = (data as FormationRow[] || []).map((item) => ({
-          id: item.id,
-          title: item.title,
-          badge: item.badge || undefined,
-          tagline: item.tagline,
-          duration: item.duration,
-          modality: item.modality,
-          description: item.description,
-          modules: item.modules,
-          publicTarget: item.public_target
-        }));
-
-        mappedFormations.sort((a, b) => a.title.localeCompare(b.title));
-
-        setFormacoes(mappedFormations);
-      } catch (err) {
-        console.error('Erro ao buscar as formações na inicialização:', err);
-        if (active) {
-          setError('Desculpe, ocorreu um problema ao carregar os programas de formação. Por favor, tente novamente.');
-        }
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadInitialFormations();
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   // Renderização do Loader de Esqueleto Premium (Skeleton) com pulsação
   if (loading) {
@@ -150,7 +49,7 @@ export const Formations: React.FC = () => {
           <AlertCircle className="text-red-400 mx-auto mb-4" size={48} />
           <h3 className="text-lg font-bold text-white mb-2">Erro de Carregamento</h3>
           <p className="text-sm text-neuro-textSecondary mb-6">{error}</p>
-          <Button variant="primary" onClick={fetchFormations} className="min-h-[44px] px-6">
+          <Button variant="primary" onClick={refetch} className="min-h-[44px] px-6">
             Tentar Novamente
           </Button>
         </div>

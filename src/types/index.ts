@@ -40,3 +40,14 @@ export interface ImpactoSocial {
   icon: string;
   description: string;
 }
+
+export interface CorporateContact {
+  title: string;
+  description: string;
+  phone: string;
+  whatsappUrl: string;
+  email: string;
+  address: string;
+  footerDisclaimer: string;
+}
+

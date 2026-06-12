@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { supabase } from '../lib/supabase';
+import { useCorporateContact } from '../hooks/useCorporateContact';
 
 export const ContactPage: React.FC = () => {
+  const { contactInfo } = useCorporateContact();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -339,10 +341,10 @@ export const ContactPage: React.FC = () => {
             <div className="space-y-8">
               <div>
                 <h3 className="text-lg font-bold font-title text-white mb-2">
-                  Atendimento Corporativo
+                  {contactInfo.title}
                 </h3>
                 <p className="text-sm text-neuro-textSecondary leading-relaxed">
-                  Oferecemos apresentações executivas estruturadas para secretários municipais, conselhos escolares, diretores de hospitais e comandos de segurança.
+                  {contactInfo.description}
                 </p>
               </div>
 
@@ -356,12 +358,12 @@ export const ContactPage: React.FC = () => {
                       Telefone & WhatsApp
                     </h4>
                     <a 
-                      href="https://wa.me/5511999999999" 
+                      href={contactInfo.whatsappUrl} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-sm text-neuro-textSecondary hover:text-white transition-colors"
                     >
-                      +55 (11) 99999-9999
+                      {contactInfo.phone}
                     </a>
                   </div>
                 </div>
@@ -375,10 +377,10 @@ export const ContactPage: React.FC = () => {
                       E-mail Institucional
                     </h4>
                     <a 
-                      href="mailto:contato@institutoneuropsicopedagogia.com.br" 
+                      href={`mailto:${contactInfo.email}`} 
                       className="text-sm text-neuro-textSecondary hover:text-white transition-colors"
                     >
-                      contato@institutoneuropsicopedagogia.com.br
+                      {contactInfo.email}
                     </a>
                   </div>
                 </div>
@@ -391,9 +393,13 @@ export const ContactPage: React.FC = () => {
                     <h4 className="text-xs uppercase font-bold text-white tracking-wider">
                       Sede Administrativa
                     </h4>
-                    <p className="text-sm text-neuro-textSecondary">
-                      Av. Paulista, 1000 - Bela Vista<br />
-                      São Paulo - SP, CEP 01310-100
+                    <p className="text-sm text-neuro-textSecondary leading-relaxed">
+                      {contactInfo.address.split('\n').map((line, i) => (
+                        <React.Fragment key={i}>
+                          {line}
+                          {i < contactInfo.address.split('\n').length - 1 && <br />}
+                        </React.Fragment>
+                      ))}
                     </p>
                   </div>
                 </div>
@@ -401,7 +407,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/5 text-xs text-neuro-textMuted leading-relaxed">
-              O Instituto de Neuropsicopedagogia é uma organização científica registrada, detentora dos registros de marcas intelectuais chanceladas pelo INPI.
+              {contactInfo.footerDisclaimer}
             </div>
           </div>
 

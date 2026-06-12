@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Brain, GraduationCap, ShieldAlert, ArrowRight } from 'lucide-react';
 import { Hero } from '../components/Hero';
+import { PageMeta } from '../components/UI/PageMeta';
 
 export const Home: React.FC = () => {
   const links = [
@@ -34,6 +35,10 @@ export const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <PageMeta 
+        title="Início" 
+        description="Instituto de Neuropsicopedagogia. Excelência em Neurociência Aplicada, Educação Inclusiva, Saúde e Segurança Pública." 
+      />
       {/* Hero Section de Impacto */}
       <Hero />
 

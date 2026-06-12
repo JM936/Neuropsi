@@ -5,6 +5,7 @@ import { Send, Phone, Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-reac
 import { Button } from '../components/UI/Button';
 import { supabase } from '../lib/supabase';
 import { useCorporateContact } from '../hooks/useCorporateContact';
+import { PageMeta } from '../components/UI/PageMeta';
 
 export const ContactPage: React.FC = () => {
   const { contactInfo } = useCorporateContact();
@@ -106,6 +107,10 @@ export const ContactPage: React.FC = () => {
 
   return (
     <section className="pt-28 pb-20 bg-neuro-darkBg relative overflow-hidden min-h-screen flex items-center justify-center">
+      <PageMeta 
+        title="Fale Conosco" 
+        description="Entre em contato com nossa equipe de especialistas e peritos do Instituto de Neuropsicopedagogia para demandas em educação, saúde ou segurança." 
+      />
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-neuro-primary/5 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neuro-accent/5 rounded-full blur-3xl -z-10" />
 

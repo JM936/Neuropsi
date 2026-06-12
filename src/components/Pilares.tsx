@@ -1,46 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, GraduationCap, HeartPulse, ShieldAlert } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { usePillars } from '../hooks/usePillars';
+
+// Renderização dinâmica dos ícones do Lucide
+const renderLucideIcon = (name: string, size = 32, className = "text-white") => {
+  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[name];
+  return IconComponent ? <IconComponent size={size} className={className} /> : null;
+};
 
 export const Pilares: React.FC = () => {
-  const pilares = [
-    {
-      icon: <Brain size={32} className="text-white" />,
-      title: 'Neurociência Aplicada',
-      subtitle: 'Ciência do cérebro e aprendizagem',
-      description: 'Estudo dos processos neurais e cognitivos para otimização do aprendizado, tomada de decisão e desenvolvimento de competências em ambientes educacionais e corporativos.',
-      colorClass: 'from-purple-600/35 to-indigo-600/20 hover:border-purple-500/50',
-      iconBg: 'bg-purple-600',
-      shadowColor: 'hover:shadow-[0_8px_30px_rgb(147,51,234,0.15)]'
-    },
-    {
-      icon: <GraduationCap size={32} className="text-white" />,
-      title: 'Educação Inclusiva',
-      subtitle: 'Formação de professores e gestores',
-      description: 'Metodologias adaptativas, PEI (Plano de Ensino Individualizado) e DUA (Desenho Universal para a Aprendizagem), capacitando educadores para acolher e desenvolver a neurodiversidade na prática.',
-      colorClass: 'from-teal-600/35 to-emerald-600/20 hover:border-teal-500/50',
-      iconBg: 'bg-teal-600',
-      shadowColor: 'hover:shadow-[0_8px_30px_rgb(13,148,136,0.15)]'
-    },
-    {
-      icon: <HeartPulse size={32} className="text-white" />,
-      title: 'Saúde Pública',
-      subtitle: 'Acolhimento e intervenção precoce',
-      description: 'Capacitação multiprofissional para agentes de saúde e clínicas, focando no rastreio, diagnóstico precoce e protocolos de intervenção terapêutica baseados em evidências científicas.',
-      colorClass: 'from-rose-600/35 to-pink-600/20 hover:border-rose-500/50',
-      iconBg: 'bg-rose-600',
-      shadowColor: 'hover:shadow-[0_8px_30px_rgb(225,29,72,0.15)]'
-    },
-    {
-      icon: <ShieldAlert size={32} className="text-white" />,
-      title: 'Segurança Pública',
-      subtitle: 'Protocolos humanizados e crise',
-      description: 'Treinamento tático e de comunicação para forças policiais e guardas civis, focando no atendimento inclusivo a pessoas com transtornos do neurodesenvolvimento em situações de crise.',
-      colorClass: 'from-amber-600/35 to-orange-600/20 hover:border-amber-500/50',
-      iconBg: 'bg-amber-600',
-      shadowColor: 'hover:shadow-[0_8px_30px_rgb(217,119,6,0.15)]'
-    }
-  ];
+  const { pillars } = usePillars();
 
   return (
     <section id="pilares" className="py-20 bg-neuro-darkBg relative overflow-hidden">
@@ -68,22 +38,22 @@ export const Pilares: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {pilares.map((pilar, index) => (
+          {pillars.map((pilar, index) => (
             <motion.div
-              key={index}
+              key={pilar.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
               whileHover={{ y: -6 }}
-              className={`relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br border-glow-premium backdrop-blur-glass flex flex-col justify-between transition-all duration-300 ${pilar.colorClass} ${pilar.shadowColor} group`}
+              className={`relative overflow-hidden p-6 rounded-2xl bg-gradient-to-br border border-neuro-border/20 backdrop-blur-md flex flex-col justify-between transition-all duration-300 ${pilar.colorClass} ${pilar.shadowColor} group`}
             >
               {/* Círculo decorativo de fundo */}
               <div className="absolute -top-12 -right-12 w-24 h-24 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-500" />
 
               <div>
                 <div className={`p-4 ${pilar.iconBg} rounded-xl w-fit mb-6 shadow-md flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300`}>
-                  {pilar.icon}
+                  {renderLucideIcon(pilar.iconName, 32, "text-white")}
                 </div>
                 <h3 className="text-xl font-bold font-title text-neuro-textPrimary mb-1">
                   {pilar.title}

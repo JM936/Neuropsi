@@ -1,87 +1,41 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, HeartPulse, ShieldAlert, CheckCircle2, ArrowRight } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { useSolutions } from '../hooks/useSolutions';
 import { Button } from './UI/Button';
+
+// Mapeamento dinâmico e seguro de ícones do Lucide
+const renderLucideIcon = (name: string, size = 20, className = "") => {
+  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[name];
+  return IconComponent ? <IconComponent size={size} className={className} /> : null;
+};
 
 export const Solutions: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'educacao' | 'saude' | 'seguranca'>('educacao');
+  const { solutions } = useSolutions();
 
   const tabs = [
     {
       id: 'educacao',
       label: 'Educação',
-      icon: <GraduationCap size={20} />,
+      iconName: 'GraduationCap',
       colorClass: 'text-teal-400 border-teal-400 bg-teal-500/10'
     },
     {
       id: 'saude',
       label: 'Saúde Pública',
-      icon: <HeartPulse size={20} />,
+      iconName: 'HeartPulse',
       colorClass: 'text-rose-400 border-rose-400 bg-rose-500/10'
     },
     {
       id: 'seguranca',
       label: 'Segurança Pública',
-      icon: <ShieldAlert size={20} />,
+      iconName: 'ShieldAlert',
       colorClass: 'text-amber-400 border-amber-400 bg-amber-500/10'
     }
   ];
 
-  const content = {
-    educacao: {
-      title: 'Inovação Pedagógica e Prática Inclusiva',
-      description: 'Capacitamos o corpo docente e gestores para o desenvolvimento de práticas de ensino verdadeiramente inclusivas. Nossos treinamentos oferecem subsídios práticos para a aplicação de metodologias ativas que se ajustam à singularidade cognitiva de cada estudante.',
-      items: [
-        'Formação em Inclusão Escolar na Prática',
-        'Neuroeducação aplicada à sala de aula',
-        'Elaboração de PEI (Plano de Ensino Individualizado)',
-        'Princípios do DUA (Desenho Universal para a Aprendizagem)',
-        'Capacitação Docente especializada em Neurodiversidade',
-        'Adaptação Curricular e de Materiais Didáticos'
-      ],
-      ctaText: 'Falar com Consultor de Educação',
-      bgGlow: 'bg-teal-500/5',
-      image: '/images/solutions_education.webp',
-      icon: <GraduationCap size={24} className="text-teal-400" />,
-      colorClass: 'text-teal-400 border-teal-500/20 bg-teal-950/40'
-    },
-    saude: {
-      title: 'Excelência Clínica e Intervenção Acolhedora',
-      description: 'Oferecemos programas de qualificação voltados a profissionais de saúde e gestores de clínicas/hospitais. Focamos em estruturar processos de triagem rápida, acolhimento diferenciado e planos de intervenção terapêutica baseados na ciência.',
-      items: [
-        'Protocolos de Rastreio em Transtornos de Neurodesenvolvimento',
-        'Acolhimento humanizado em serviços de saúde mental',
-        'Intervenções baseadas em evidências científicas',
-        'Capacitação de equipes multiprofissionais de saúde',
-        'Protocolos clínicos integrados de neuropsicologia',
-        'Gestão de unidades de reabilitação e acolhimento'
-      ],
-      ctaText: 'Falar com Consultor de Saúde',
-      bgGlow: 'bg-rose-500/5',
-      image: '/images/solutions_health.webp',
-      icon: <HeartPulse size={24} className="text-rose-400" />,
-      colorClass: 'text-rose-400 border-rose-500/20 bg-rose-950/40'
-    },
-    seguranca: {
-      title: 'Treinamento Tático e Atendimento Humanizado',
-      description: 'Estruturamos metodologias e guias práticos pioneiros para as forças de segurança. Preparamos equipes policiais e Guardas Civis Municipais (GCM) para identificar, comunicar e gerenciar ocorrências com cidadãos neurodivergentes de forma segura e ética.',
-      items: [
-        'Protocolos de Atendimento Inclusivo para forças policiais',
-        'Gerenciamento de crises envolvendo pessoas com autismo',
-        'Protocolos operacionais de abordagem para a Guarda Civil Municipal (GCM)',
-        'Comunicação não-violenta e desescalada verbal',
-        'Resolução pacífica de conflitos em ambientes públicos',
-        'Legislação e direitos da pessoa neurodivergente'
-      ],
-      ctaText: 'Falar com Consultor de Segurança',
-      bgGlow: 'bg-amber-500/5',
-      image: '/images/solutions_security.webp',
-      icon: <ShieldAlert size={24} className="text-amber-400" />,
-      colorClass: 'text-amber-400 border-amber-500/20 bg-amber-950/40'
-    }
-  };
-
-  const currentContent = content[activeTab];
+  const currentContent = solutions[activeTab];
 
   const handleScrollToContact = () => {
     const element = document.getElementById('contact');
@@ -114,22 +68,42 @@ export const Solutions: React.FC = () => {
           </p>
         </div>
 
-        {/* Abas Seletoras (Tabs) */}
+        {/* Abas Seletoras (Tabs) - Acessibilidade de toque de 44px */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1.5 bg-neuro-cardBg/60 rounded-xl border border-neuro-border max-w-full overflow-x-auto gap-2">
+          <div 
+            role="tablist" 
+            aria-label="Opções de Soluções Institucionais"
+            className="inline-flex p-1.5 bg-neuro-cardBg/60 rounded-xl border border-neuro-border max-w-full overflow-x-auto gap-2"
+          >
             {tabs.map((tab) => {
               const isSelected = activeTab === tab.id;
+              if (isSelected) {
+                return (
+                  <button
+                    key={tab.id}
+                    id={`tab-${tab.id}`}
+                    onClick={() => setActiveTab(tab.id as 'educacao' | 'saude' | 'seguranca')}
+                    className="flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all duration-300 whitespace-nowrap min-h-[44px] bg-neuro-primary text-white shadow-glow"
+                    aria-selected="true"
+                    aria-controls={`panel-${tab.id}`}
+                    role="tab"
+                  >
+                    {renderLucideIcon(tab.iconName, 20)}
+                    {tab.label}
+                  </button>
+                );
+              }
               return (
                 <button
                   key={tab.id}
+                  id={`tab-${tab.id}`}
                   onClick={() => setActiveTab(tab.id as 'educacao' | 'saude' | 'seguranca')}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all duration-300 whitespace-nowrap min-h-[44px] ${
-                    isSelected
-                      ? 'bg-neuro-primary text-white shadow-glow'
-                      : 'text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/30'
-                  }`}
+                  className="flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all duration-300 whitespace-nowrap min-h-[44px] text-neuro-textSecondary hover:text-white hover:bg-neuro-cardBg/30"
+                  aria-selected="false"
+                  aria-controls={`panel-${tab.id}`}
+                  role="tab"
                 >
-                  {tab.icon}
+                  {renderLucideIcon(tab.iconName, 20)}
                   {tab.label}
                 </button>
               );
@@ -142,11 +116,14 @@ export const Solutions: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
+              id={`panel-${activeTab}`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4 }}
-              className={`p-8 sm:p-12 rounded-2xl bg-glass border border-neuro-border shadow-glass relative overflow-hidden`}
+              className="p-8 sm:p-12 rounded-2xl bg-glass border border-neuro-border shadow-glass relative overflow-hidden"
+              role="tabpanel"
+              aria-labelledby={`tab-${activeTab}`}
             >
               {/* Brilho decorativo no canto */}
               <div className={`absolute top-0 right-0 w-80 h-80 rounded-full blur-3xl -z-10 pointer-events-none transition-all duration-500 ${currentContent.bgGlow}`} />
@@ -164,18 +141,19 @@ export const Solutions: React.FC = () => {
                     </p>
                   </div>
                   
-                  {/* Ilustração Temática Decorativa */}
+                  {/* Ilustração Temática Decorativa com Lazy Loading */}
                   <div className="my-6 relative rounded-xl overflow-hidden h-36 sm:h-44 border border-neuro-border/20 bg-neuro-darkBg/30 flex items-center justify-center pointer-events-none group">
                     <img 
                       src={currentContent.image} 
                       alt={currentContent.title}
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover opacity-20 solutions-image-bg group-hover:scale-105 transition-transform duration-700" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-neuro-darkBgLight/80 via-transparent to-neuro-darkBgLight/45" />
                     
                     {/* Badge de Ícone centralizado e suave */}
                     <div className={`relative z-10 flex items-center gap-3 p-3.5 backdrop-blur-md rounded-xl border transition-all duration-300 ${currentContent.colorClass}`}>
-                      {currentContent.icon}
+                      {renderLucideIcon(currentContent.iconName, 24)}
                       <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white">
                         Estratégia e Ação de Impacto
                       </span>
@@ -185,11 +163,11 @@ export const Solutions: React.FC = () => {
                   <div>
                     <Button 
                       variant="accent" 
-                      className="gap-2 self-start"
+                      className="gap-2 self-start min-h-[44px]"
                       onClick={handleScrollToContact}
                     >
                       {currentContent.ctaText}
-                      <ArrowRight size={18} />
+                      {renderLucideIcon('ArrowRight', 18)}
                     </Button>
                   </div>
                 </div>
@@ -202,7 +180,7 @@ export const Solutions: React.FC = () => {
                   <ul className="space-y-4">
                     {currentContent.items.map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <CheckCircle2 className="text-neuro-accent mt-0.5 flex-shrink-0" size={18} />
+                        {renderLucideIcon('CheckCircle2', 18, "text-neuro-accent mt-0.5 flex-shrink-0")}
                         <span className="text-sm sm:text-base text-neuro-textPrimary font-medium">
                           {item}
                         </span>

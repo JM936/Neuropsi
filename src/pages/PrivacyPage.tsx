@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Eye, Database, FileText, UserCheck, Scale } from 'lucide-react';
+import { PageMeta } from '../components/UI/PageMeta';
 
 export const PrivacyPage: React.FC = () => {
   const sections = [
@@ -38,6 +39,10 @@ export const PrivacyPage: React.FC = () => {
 
   return (
     <section className="pt-28 pb-20 bg-neuro-darkBg relative overflow-hidden min-h-screen flex items-center justify-center">
+      <PageMeta 
+        title="Política de Privacidade" 
+        description="Política de Privacidade e Proteção de Dados (LGPD) do Instituto de Neuropsicopedagogia. Transparência na coleta, uso e segurança dos seus dados." 
+      />
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-neuro-primary/5 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neuro-accent/5 rounded-full blur-3xl -z-10" />
 

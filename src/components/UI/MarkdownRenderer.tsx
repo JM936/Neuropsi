@@ -1,5 +1,20 @@
 import React from 'react';
 
+// Função utilitária para higienizar links Markdown e evitar ataques XSS baseados em DOM via JavaScript protocol.
+const sanitizeHref = (url: string): string => {
+  const trimmed = url.trim().toLowerCase();
+  // Bloqueia protocolos executáveis perigosos
+  if (
+    trimmed.startsWith('javascript:') || 
+    trimmed.startsWith('data:') || 
+    trimmed.startsWith('vbscript:') ||
+    trimmed.startsWith('file:')
+  ) {
+    return '#';
+  }
+  return url;
+};
+
 interface MarkdownRendererProps {
   content: string;
 }
@@ -43,7 +58,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) =
         parts.push(
           <a
             key={keyCounter++}
-            href={match[7]}
+            href={sanitizeHref(match[7])}
             target="_blank"
             rel="noopener noreferrer"
             className="text-neuro-accent hover:underline font-semibold transition-colors duration-200"

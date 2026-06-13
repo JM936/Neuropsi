@@ -27,6 +27,15 @@ const formatPhoneNumber = (value: string) => {
   return `(${limited.slice(0, 2)}) ${limited.slice(2, 7)}-${limited.slice(7)}`;
 };
 
+const generateMathChallenge = () => {
+  const num1 = Math.floor(Math.random() * 9) + 1;
+  const num2 = Math.floor(Math.random() * 9) + 1;
+  return {
+    question: `${num1} + ${num2}`,
+    answer: num1 + num2
+  };
+};
+
 export const ContactPage: React.FC = () => {
   const { contactInfo } = useCorporateContact();
   const [formData, setFormData] = useState({
@@ -42,6 +51,9 @@ export const ContactPage: React.FC = () => {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  const [challenge, setChallenge] = useState(() => generateMathChallenge());
+  const [userAnswer, setUserAnswer] = useState('');
 
   const validate = () => {
     const tempErrors: Record<string, string> = {};
@@ -58,6 +70,13 @@ export const ContactPage: React.FC = () => {
       tempErrors.phone = 'O telefone/WhatsApp é obrigatório';
     } else if (phoneDigits.length < 10) {
       tempErrors.phone = 'O número deve conter o DDD e pelo menos 8 dígitos';
+    }
+    
+    // Validação do Captcha Matemático
+    if (!userAnswer.trim()) {
+      tempErrors.captcha = 'Responda à pergunta de segurança';
+    } else if (parseInt(userAnswer.trim(), 10) !== challenge.answer) {
+      tempErrors.captcha = 'Resposta incorreta. Tente novamente.';
     }
     
     if (!formData.message.trim()) tempErrors.message = 'Escreva sua mensagem ou dúvida';
@@ -101,6 +120,8 @@ export const ContactPage: React.FC = () => {
         });
         setHoneypot('');
         setAcceptedPrivacy(false);
+        setUserAnswer('');
+        setChallenge(generateMathChallenge());
         return;
       }
 
@@ -133,9 +154,12 @@ export const ContactPage: React.FC = () => {
       });
       setHoneypot('');
       setAcceptedPrivacy(false);
+      setUserAnswer('');
+      setChallenge(generateMathChallenge());
     } catch (error) {
       console.error('Erro ao registrar mensagem no Supabase:', error);
       setStatus('error');
+      setChallenge(generateMathChallenge());
     }
   };
 
@@ -305,6 +329,31 @@ export const ContactPage: React.FC = () => {
                   tabIndex={-1}
                   autoComplete="off"
                 />
+              </div>
+
+              {/* Desafio de Segurança (Captcha Matemático) */}
+              <div className="space-y-1.5">
+                <label htmlFor="userAnswer" className="block text-xs font-semibold uppercase tracking-wider text-neuro-textSecondary mb-1.5">
+                  Pergunta de Segurança: Quanto é {challenge.question}? *
+                </label>
+                <input
+                  type="text"
+                  id="userAnswer"
+                  name="userAnswer"
+                  value={userAnswer}
+                  onChange={(e) => {
+                    setUserAnswer(e.target.value);
+                    if (errors.captcha) {
+                      setErrors(prev => ({ ...prev, captcha: '' }));
+                    }
+                  }}
+                  className={`w-full max-w-[180px] px-4 py-2.5 rounded-lg bg-neuro-darkBg/80 border text-white text-sm focus:outline-none focus:ring-2 focus:ring-neuro-primary transition-all duration-300 ${
+                    errors.captcha ? 'border-red-500 focus:ring-red-500' : 'border-neuro-border'
+                  }`}
+                  placeholder="Sua resposta"
+                  autoComplete="off"
+                />
+                {errors.captcha && <p className="text-red-500 text-xs mt-1 font-medium">{errors.captcha}</p>}
               </div>
 
               {/* Checkbox de Consentimento LGPD */}

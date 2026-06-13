@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { ContactFooter } from './components/ContactFooter';
 import { ScrollToTop } from './components/ScrollToTop';
 import { PageTransition } from './components/UI/PageTransition';
+import { ErrorBoundary } from './components/UI/ErrorBoundary';
 
 // Importação Dinâmica (Lazy Loading) das Páginas do Site para Code-Splitting inteligente
 const Home = React.lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
@@ -21,7 +22,8 @@ const ArticleDetailPage = React.lazy(() => import('./pages/ArticleDetailPage').t
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <ErrorBoundary>
+      <Router>
       <div className="min-h-screen flex flex-col bg-neuro-darkBg text-neuro-textPrimary antialiased selection:bg-neuro-primary/30 selection:text-neuro-accent">
         {/* Garante que a troca de rota role a tela para o topo */}
         <ScrollToTop />
@@ -61,7 +63,8 @@ const App: React.FC = () => {
         <ContactFooter />
       </div>
     </Router>
-  );
+  </ErrorBoundary>
+);
 };
 
 export default App;

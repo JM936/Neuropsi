@@ -7,6 +7,26 @@ import { supabase } from '../lib/supabase';
 import { useCorporateContact } from '../hooks/useCorporateContact';
 import { PageMeta } from '../components/UI/PageMeta';
 
+// Função auxiliar para aplicar a máscara de telefone brasileiro (DDD + 9 ou 8 dígitos)
+const formatPhoneNumber = (value: string) => {
+  const digits = value.replace(/\D/g, '');
+  const limited = digits.slice(0, 11);
+  
+  if (limited.length === 0) {
+    return '';
+  }
+  if (limited.length <= 2) {
+    return `(${limited}`;
+  }
+  if (limited.length <= 6) {
+    return `(${limited.slice(0, 2)}) ${limited.slice(2)}`;
+  }
+  if (limited.length <= 10) {
+    return `(${limited.slice(0, 2)}) ${limited.slice(2, 6)}-${limited.slice(6)}`;
+  }
+  return `(${limited.slice(0, 2)}) ${limited.slice(2, 7)}-${limited.slice(7)}`;
+};
+
 export const ContactPage: React.FC = () => {
   const { contactInfo } = useCorporateContact();
   const [formData, setFormData] = useState({
@@ -31,7 +51,15 @@ export const ContactPage: React.FC = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       tempErrors.email = 'Formato de e-mail inválido';
     }
-    if (!formData.phone.trim()) tempErrors.phone = 'O telefone/WhatsApp é obrigatório';
+    
+    // Validação de telefone formatado (mínimo de 10 dígitos numéricos: DDD + 8 dígitos)
+    const phoneDigits = formData.phone.replace(/\D/g, '');
+    if (!formData.phone.trim()) {
+      tempErrors.phone = 'O telefone/WhatsApp é obrigatório';
+    } else if (phoneDigits.length < 10) {
+      tempErrors.phone = 'O número deve conter o DDD e pelo menos 8 dígitos';
+    }
+    
     if (!formData.message.trim()) tempErrors.message = 'Escreva sua mensagem ou dúvida';
     if (!acceptedPrivacy) tempErrors.privacy = 'Você deve aceitar a Política de Privacidade para enviar';
     
@@ -41,7 +69,13 @@ export const ContactPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    let processedValue = value;
+    if (name === 'phone') {
+      processedValue = formatPhoneNumber(value);
+    }
+    
+    setFormData(prev => ({ ...prev, [name]: processedValue }));
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }

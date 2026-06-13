@@ -29,7 +29,7 @@ export const Logo: React.FC<LogoProps> = ({
   return (
     <div className={`flex items-center gap-3 select-none logo-container ${className}`}>
       <img
-        src="https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/logo_symbol.webp"
+        src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/blog-images/logo_symbol.webp`}
         alt="Logotipo do Instituto de Neuropsicopedagogia"
         className="h-full w-auto object-contain flex-shrink-0 logo-image-animate"
       />

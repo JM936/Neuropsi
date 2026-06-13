@@ -41,7 +41,7 @@ const DEFAULT_SOLUTIONS: Record<'educacao' | 'saude' | 'seguranca', SolutionData
     ],
     ctaText: 'Falar com Consultor de Educação',
     bgGlow: 'bg-teal-500/5',
-    image: 'https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/solutions_education.webp',
+    image: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/blog-images/solutions_education.webp`,
     iconName: 'GraduationCap',
     colorClass: 'text-teal-400 border-teal-500/20 bg-teal-950/40'
   },
@@ -59,7 +59,7 @@ const DEFAULT_SOLUTIONS: Record<'educacao' | 'saude' | 'seguranca', SolutionData
     ],
     ctaText: 'Falar com Consultor de Saúde',
     bgGlow: 'bg-rose-500/5',
-    image: 'https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/solutions_health.webp',
+    image: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/blog-images/solutions_health.webp`,
     iconName: 'HeartPulse',
     colorClass: 'text-rose-400 border-rose-500/20 bg-rose-950/40'
   },
@@ -77,7 +77,7 @@ const DEFAULT_SOLUTIONS: Record<'educacao' | 'saude' | 'seguranca', SolutionData
     ],
     ctaText: 'Falar com Consultor de Segurança',
     bgGlow: 'bg-amber-500/5',
-    image: 'https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/solutions_security.webp',
+    image: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/blog-images/solutions_security.webp`,
     iconName: 'ShieldAlert',
     colorClass: 'text-amber-400 border-amber-500/20 bg-amber-950/40'
   }

@@ -45,11 +45,11 @@ export const President: React.FC = () => {
               {/* Moldura da Imagem */}
               <div className="relative p-2 bg-neuro-darkBgLight border border-neuro-border rounded-2xl shadow-2xl">
                 <img 
-                  src="/images/logo_symbol.webp" 
-                  alt="Logotipo do Instituto de Neuropsicopedagogia" 
-                  className="rounded-xl w-full h-[400px] object-contain p-8 bg-neuro-darkBgLight/50 shadow-inner logo-image-animate"
+                  src="https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/president.webp" 
+                  alt="Comendador Leonardo Leal - Presidente do Instituto de Neuropsicopedagogia" 
+                  className="rounded-xl w-full h-[400px] object-cover bg-neuro-darkBgLight/50 shadow-inner"
                   onError={(e) => {
-                    e.currentTarget.src = "/images/logo_symbol.webp";
+                    e.currentTarget.src = "https://wbxrplkugvbpwryibnmu.supabase.co/storage/v1/object/public/blog-images/logo_symbol.webp";
                   }}
                 />
                 

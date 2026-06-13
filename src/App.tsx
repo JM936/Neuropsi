@@ -16,6 +16,8 @@ const PresidentPage = React.lazy(() => import('./pages/PresidentPage').then(m =>
 const SocialImpactPage = React.lazy(() => import('./pages/SocialImpactPage').then(m => ({ default: m.SocialImpactPage })));
 const ContactPage = React.lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const BlogPage = React.lazy(() => import('./pages/BlogPage').then(m => ({ default: m.BlogPage })));
+const ArticleDetailPage = React.lazy(() => import('./pages/ArticleDetailPage').then(m => ({ default: m.ArticleDetailPage })));
 
 const App: React.FC = () => {
   return (
@@ -46,6 +48,8 @@ const App: React.FC = () => {
               <Route path="/impacto" element={<PageTransition><SocialImpactPage /></PageTransition>} />
               <Route path="/contato" element={<PageTransition><ContactPage /></PageTransition>} />
               <Route path="/privacidade" element={<PageTransition><PrivacyPage /></PageTransition>} />
+              <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
+              <Route path="/blog/:slug" element={<PageTransition><ArticleDetailPage /></PageTransition>} />
               
               {/* Redirecionamento de rotas inexistentes para a Home */}
               <Route path="*" element={<PageTransition><Home /></PageTransition>} />

@@ -51,3 +51,18 @@ export interface CorporateContact {
   footerDisclaimer: string;
 }
 
+export interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  tagline: string;
+  content: string;
+  imageUrl?: string;
+  category: 'educacao' | 'saude' | 'seguranca' | 'neurociencia';
+  authorName: string;
+  authorRole: string;
+  readTime: string;
+  publishedAt: string;
+  createdAt: string;
+}
+

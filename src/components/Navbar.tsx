@@ -14,7 +14,8 @@ export const Navbar: React.FC = () => {
     { path: '/', name: 'Início' },
     { path: '/sobre', name: 'Quem Somos' },
     { path: '/solucoes', name: 'Soluções' },
-    { path: '/formacoes', name: 'Formações' }
+    { path: '/formacoes', name: 'Formações' },
+    { path: '/blog', name: 'Blog' }
   ];
 
   const mobileSections = [
@@ -23,6 +24,7 @@ export const Navbar: React.FC = () => {
     { path: '/pilares', name: 'Pilares' },
     { path: '/solucoes', name: 'Soluções' },
     { path: '/formacoes', name: 'Formações' },
+    { path: '/blog', name: 'Blog' },
     { path: '/diferenciais', name: 'Diferenciais' },
     { path: '/presidente', name: 'Presidente' },
     { path: '/impacto', name: 'Impacto' }

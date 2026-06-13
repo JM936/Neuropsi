@@ -151,33 +151,36 @@ export const useFormations = () => {
   });
 
   const [error, setError] = useState<string | null>(null);
+  const [refetchIndex, setRefetchIndex] = useState(0);
 
-  const fetchFormations = async (isActive = true) => {
-    try {
-      const { data, error: fetchError } = await supabase
-        .from('formations')
-        .select('*');
+  useEffect(() => {
+    let active = true;
 
-      if (fetchError) {
-        throw fetchError;
-      }
+    const fetchFormations = async () => {
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('formations')
+          .select('*');
 
-      if (data && data.length > 0) {
-        const mapped: Formacao[] = (data as FormationRow[]).map((item) => ({
-          id: item.id,
-          title: item.title,
-          badge: item.badge || undefined,
-          tagline: item.tagline,
-          duration: item.duration,
-          modality: item.modality,
-          description: item.description,
-          modules: item.modules,
-          publicTarget: item.public_target
-        }));
+        if (fetchError) {
+          throw fetchError;
+        }
 
-        mapped.sort((a, b) => a.title.localeCompare(b.title));
+        if (data && data.length > 0 && active) {
+          const mapped: Formacao[] = (data as FormationRow[]).map((item) => ({
+            id: item.id,
+            title: item.title,
+            badge: item.badge || undefined,
+            tagline: item.tagline,
+            duration: item.duration,
+            modality: item.modality,
+            description: item.description,
+            modules: item.modules,
+            publicTarget: item.public_target
+          }));
 
-        if (isActive) {
+          mapped.sort((a, b) => a.title.localeCompare(b.title));
+
           setFormacoes(mapped);
           setError(null);
           try {
@@ -186,31 +189,28 @@ export const useFormations = () => {
             console.error('Erro ao salvar no sessionStorage:', storageErr);
           }
         }
+      } catch (err) {
+        console.error('Erro ao buscar as formações no hook:', err);
+        if (active) {
+          setError('Não foi possível carregar os programas de formação. Por favor, tente novamente.');
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
       }
-    } catch (err) {
-      console.error('Erro ao buscar as formações no hook:', err);
-      // Se não temos dados em cache, setamos erro amigável
-      if (isActive && formacoes.length === 0) {
-        setError('Não foi possível carregar os programas de formação. Por favor, tente novamente.');
-      }
-    } finally {
-      if (isActive) {
-        setLoading(false);
-      }
-    }
-  };
+    };
 
-  useEffect(() => {
-    let active = true;
-    fetchFormations(active);
+    void fetchFormations();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [refetchIndex]);
 
   const refetch = () => {
-    fetchFormations(true);
+    setLoading(true);
+    setRefetchIndex((prev) => prev + 1);
   };
 
   return { formacoes, loading, error, refetch };
